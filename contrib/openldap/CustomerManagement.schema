@@ -1,0 +1,115 @@
+attributetype ( 1.3.6.1.4.1.45599.1.1.1 NAME 'supportAgreementClass'
+	DESC 'The support agreement class. e.g. \27Silver\27, \27Gold\27, \27Platinum\27.'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.1.2 NAME 'supportAgreementContact'
+	DESC 'A contact in the organisation for renewing the support agreement.  Should point to a user within the organisation.'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.1.3 NAME 'supportAgreementDescription'
+	DESC 'Any additional humanly readable information about this support agreement.'
+	EQUALITY caseExactMatch
+	ORDERING caseExactOrderingMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.1.4 NAME 'supportAgreementDocumentURI'
+	DESC 'Where the document describing the SLAs and terms of the support agreement is located.'
+	EQUALITY caseExactMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.1.5 NAME 'supportAgreementEnds'
+	DESC 'When the support agreement will next expire.'
+	EQUALITY generalizedTimeMatch
+	ORDERING generalizedTimeOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.1.6 NAME 'supportAgreementIsActive'
+	DESC 'Whether the support agreement is currently active.'
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.1.7 NAME 'supportAgreementIsActiveLastChange'
+	DESC 'When the support agreement was last activated or deactivated.'
+	EQUALITY generalizedTimeMatch
+	ORDERING generalizedTimeOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.1.8 NAME 'supportAgreementStarted'
+	DESC 'When the support agreement started.'
+	EQUALITY generalizedTimeMatch
+	ORDERING generalizedTimeOrderingMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.24
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.1.9 NAME 'supportAgreementSupportedService'
+	DESC 'The type of service this support agreement is for, e.g. LDAP, PostgreSQL, RADIUS. Should point to an object of type \27supportedService\27, contained within this organisation'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.3.2 NAME 'supportedServiceDescription'
+	DESC 'Humanly readable description of the service being supported'
+	EQUALITY caseExactMatch
+	ORDERING caseExactOrderingMatch
+	SUBSTR caseExactSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+	SINGLE-VALUE
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.3.3 NAME 'supportedServiceSystem'
+	DESC 'A system in a supported service. Should point to one of the systems contained within this organisation.'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.4.1 NAME 'organisationContactManagement'
+	DESC 'A management contact. Should point to a user within the organisation.'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.4.2 NAME 'organisationContactTechnical'
+	DESC 'A technical contact. Should point to a user within the organisation.'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.4.3 NAME 'organisationContactFinance'
+	DESC 'A contact in the finance department. Should point to a user within the organisation.'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+	USAGE userApplications )
+attributetype ( 1.3.6.1.4.1.45599.1.4.4 NAME 'organisationEnabled'
+	DESC 'Global toggle for enabling/disabling an organisation.'
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7
+	SINGLE-VALUE
+	USAGE userApplications )
+objectclass ( 1.3.6.1.4.1.445599.1.4 NAME 'supportedOrganisation'
+	DESC 'Contacts for an organisation or a department within an organisation.'
+	SUP top
+	AUXILIARY
+	MAY ( organisationContactTechnical $ organisationContactFinance $ organisationContactManagement $ organisationEnabled ) )
+objectclass ( 1.3.6.1.4.1.45599.1.1 NAME 'supportAgreement'
+	DESC 'Represents a support agreement between a customer and ourselves.'
+	SUP top
+	STRUCTURAL
+	MUST ( supportAgreementIsActive $ supportAgreementStarted $ supportAgreementEnds $ supportAgreementIsActiveLastChange $ supportAgreementClass $ cn )
+	MAY ( supportAgreementContact $ supportAgreementDocumentURI $ supportAgreementSupportedService $ description ) )
+objectclass ( 1.3.6.1.4.1.45599.1.2 NAME 'supportClass'
+	DESC 'The support agreement class. e.g. \27Silver\27, \27Gold\27, \27Platinum\27.'
+	SUP top
+	STRUCTURAL
+	MUST cn
+	MAY description )
+objectclass ( 1.3.6.1.4.1.45599.1.3 NAME 'supportedService'
+	DESC 'Describes systems covered under a support agreement.'
+	SUP top
+	STRUCTURAL
+	MUST cn
+	MAY ( supportedServiceSystem $ description ) )
